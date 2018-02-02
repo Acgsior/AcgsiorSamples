@@ -1,17 +1,17 @@
 import * as React from 'react';
 
-interface AsyncComponentState {
+interface AsyncComponentHocState {
   resolved: boolean;
   componentProps: {};
 }
 
-interface AsyncComponentProps {
+interface AsyncComponentHocProps {
   loader: () => Promise<{}> | {};
   component: (props: {}) => React.ReactNode;
 }
 
-export default class AsyncComponent extends React.Component<AsyncComponentProps, AsyncComponentState> {
-  constructor(props: AsyncComponentProps) {
+export default class AsyncComponentHoc extends React.Component<AsyncComponentHocProps, AsyncComponentHocState> {
+  constructor(props: AsyncComponentHocProps) {
     super(props);
 
     this.state = {
@@ -24,7 +24,7 @@ export default class AsyncComponent extends React.Component<AsyncComponentProps,
     const { resolved } = this.state;
     if (!resolved) {
       const { loader } = this.props;
-      new Promise(() => loader()).then((componentProps) => {
+      new Promise(resolve => resolve(loader())).then((componentProps) => {
         this.setState({ resolved: true, componentProps });
       });
     }
