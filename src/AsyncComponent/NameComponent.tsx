@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface NameComponentProps extends React.Props<{}> {
+export interface NameComponentProps {
   name: string;
   label?: string;
 }
