@@ -2,8 +2,6 @@ import * as React from 'react';
 import asyncComponent from './asyncComponent';
 import NameComponent from './NameComponent';
 
-import './index.css';
-
 interface AppState {
   count: number;
 }
