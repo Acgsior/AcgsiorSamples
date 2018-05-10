@@ -1,5 +1,6 @@
-import { combineReducers, compose, createStore } from 'redux';
-import { reducer as cityReducer } from './RenderCall/cityDuck';
+import { combineReducers, compose, applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import { reducer as cityReducer } from './RenderCall/duck';
 
 /* tslint:disable */
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -8,4 +9,5 @@ const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
 const combined = combineReducers({
   city: cityReducer
 });
-export default createStore(combined, composeEnhancers());
+
+export default createStore(combined, composeEnhancers(applyMiddleware(thunk)));

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { cityLoad, CityLoadAction, CityState } from './cityDuck';
+import { cityLoad, CityLoadAction, CityState } from './duck';
+import City from './City';
 
 interface CitiesProps {
   cities: Array<string>;
@@ -17,11 +18,11 @@ class Cities extends React.PureComponent<CitiesProps> {
 
   renderCities = () => {
     const { cities } = this.props;
-    return cities.map((city: string, index: number) => <li key={`${city}-${index}`}>{city}</li>);
+    return cities.map((city: string, index: number) => <City key={index} index={index} city={city} />);
   }
 
   render() {
-    console.log('Cities', ++count);
+    console.log('=== Cities', ++count);
     const { keyword } = this.props;
     return (
       <div>

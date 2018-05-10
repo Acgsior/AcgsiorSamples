@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { citySearch, CitySearchAction, CityState } from './cityDuck';
+
 import Cities from './Cities';
+import CityRandomButton from './CityRandomButton';
+
+import { citySearch, CitySearchAction, CityState } from './duck';
 
 interface CitySectionProps {
   keyword: string;
@@ -11,18 +14,17 @@ interface CitySectionProps {
 let count = 0;
 
 class CitySection extends React.PureComponent<CitySectionProps> {
+
   render() {
-    console.log('CitySection', ++count);
+    console.log('=== City Container', ++count);
     const { keyword } = this.props;
     return (
       <div>
         <input
-          type="text"
           value={keyword}
-          onChange={({ target: { value } }) => {
-            this.props.citySearch(value);
-          }}
+          onChange={({ target: { value } }) => this.props.citySearch(value)}
         />
+        <CityRandomButton />
         <Cities />
       </div>
     );

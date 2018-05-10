@@ -1,5 +1,6 @@
 import * as faker from 'faker';
 import { Action } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 
 export const CITY_LOAD = 'renderCall/cityLoad';
 export const CITY_SEARCH = 'renderCall/citySearch';
@@ -25,6 +26,14 @@ export const citySearch = (keyword: string): CitySearchAction => ({
     keyword
   }
 });
+
+export const cityFilteringLoad = (seed: string): ThunkAction<void, { city: CityState }, {}> =>
+  (dispatch, getState: () => { city: CityState }) => {
+    const { keyword } = getState().city;
+
+    dispatch(cityLoad(seed));
+    keyword && dispatch(citySearch(keyword));
+  };
 
 export type CityState = {
   cities: Array<string>;
