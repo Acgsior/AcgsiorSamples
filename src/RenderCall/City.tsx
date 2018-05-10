@@ -10,7 +10,7 @@ export default class City extends React.PureComponent<CityProps> {
     const { city, index } = this.props;
     console.log('=== City', index);
     return (
-      <li key={city}>{city}</li>
+      <li>{city}</li>
     );
   }
 }

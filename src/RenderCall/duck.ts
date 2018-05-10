@@ -6,17 +6,21 @@ export const CITY_LOAD = 'renderCall/cityLoad';
 export const CITY_SEARCH = 'renderCall/citySearch';
 
 export interface CityLoadAction extends Action {
-  payload: { seed: string };
+  payload: {
+    seed: string;
+    firstOnly: boolean;
+  };
 }
 
 export interface CitySearchAction extends Action {
   payload: { keyword: string };
 }
 
-export const cityLoad = (seed: string = '0'): CityLoadAction => ({
+export const cityLoad = (seed: string = '0', firstOnly: boolean = false): CityLoadAction => ({
   type: CITY_LOAD,
   payload: {
-    seed
+    seed,
+    firstOnly
   }
 });
 
@@ -27,11 +31,11 @@ export const citySearch = (keyword: string): CitySearchAction => ({
   }
 });
 
-export const cityFilteringLoad = (seed: string): ThunkAction<void, { city: CityState }, {}> =>
+export const cityFilteringLoad = (seed: string, firstOnly: boolean): ThunkAction<void, { city: CityState }, {}> =>
   (dispatch, getState: () => { city: CityState }) => {
     const { keyword } = getState().city;
 
-    dispatch(cityLoad(seed));
+    dispatch(cityLoad(seed, firstOnly));
     keyword && dispatch(citySearch(keyword));
   };
 
@@ -50,10 +54,16 @@ const fakeCity = () => faker.fake('{{address.city}}');
 
 const reducerHandlers = {
   [CITY_LOAD]: (state: CityState, action: CityLoadAction) => {
-    const { payload: { seed } } = action;
+    const { payload: { seed, firstOnly } } = action;
 
-    const cities = cachedCities[seed] ? cachedCities[seed] :
-      Array(5).fill(0).map(_ => fakeCity());
+    let cities = state.cities;
+
+    if (firstOnly) {
+      cities = [fakeCity(), ...cities.slice(1)];
+    } else {
+      cities = cachedCities[seed] ? cachedCities[seed] :
+        Array(5).fill(0).map(_ => fakeCity());
+    }
 
     cachedCities[seed] = cities;
     cachedSeed = seed;
