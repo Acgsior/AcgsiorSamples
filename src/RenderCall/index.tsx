@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import Cities from './Cities';
-import CityRandomButton from './CityRandomButton';
+import Cities from './City/Cities';
+import CityRandomButton from './City/CityRandomButton';
+import States from './State/States';
+import Combine from './StateCityCombine/Combine';
 
-import { citySearch, CitySearchAction, CityState } from './duck';
+import { citySearch, CitySearchAction, CityState } from './City/duck';
 
 interface CitySectionProps {
   keyword: string;
@@ -13,19 +15,20 @@ interface CitySectionProps {
 
 let count = 0;
 
-class CitySection extends React.PureComponent<CitySectionProps> {
+class StateCitySection extends React.PureComponent<CitySectionProps> {
+
+  onCityKeywordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => this.props.citySearch(value);
 
   render() {
     console.log('=== City Container', ++count);
     const { keyword } = this.props;
     return (
       <div>
-        <input
-          value={keyword}
-          onChange={({ target: { value } }) => this.props.citySearch(value)}
-        />
+        <States />
+        <input value={keyword} onChange={this.onCityKeywordChange} />
         <CityRandomButton />
         <Cities />
+        <Combine />
       </div>
     );
   }
@@ -38,4 +41,4 @@ export default connect(
   {
     citySearch
   }
-)(CitySection);
+)(StateCitySection);

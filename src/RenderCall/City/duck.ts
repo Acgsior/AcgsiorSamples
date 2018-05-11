@@ -2,8 +2,8 @@ import * as faker from 'faker';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-export const CITY_LOAD = 'renderCall/cityLoad';
-export const CITY_SEARCH = 'renderCall/citySearch';
+export const CITY_LOAD = 'city/cityLoad';
+export const CITY_SEARCH = 'city/citySearch';
 
 export interface CityLoadAction extends Action {
   payload: {
@@ -26,9 +26,7 @@ export const cityLoad = (seed: string = '0', firstOnly: boolean = false): CityLo
 
 export const citySearch = (keyword: string): CitySearchAction => ({
   type: CITY_SEARCH,
-  payload: {
-    keyword
-  }
+  payload: { keyword }
 });
 
 export const cityFilteringLoad = (seed: string, firstOnly: boolean): ThunkAction<void, { city: CityState }, {}> =>
@@ -56,10 +54,10 @@ const reducerHandlers = {
   [CITY_LOAD]: (state: CityState, action: CityLoadAction) => {
     const { payload: { seed, firstOnly } } = action;
 
-    let cities = state.cities;
+    let cities;
 
     if (firstOnly) {
-      cities = [fakeCity(), ...cities.slice(1)];
+      cities = [fakeCity(), ...state.cities.slice(1)];
     } else {
       cities = cachedCities[seed] ? cachedCities[seed] :
         Array(5).fill(0).map(_ => fakeCity());
